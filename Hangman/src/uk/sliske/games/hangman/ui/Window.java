@@ -97,7 +97,7 @@ public class Window extends JFrame {
 		String word = game.getWord(l <= 0);
 		wordLabel.setText(word);
 		String[] used = game.getUsedChars();
-		if (word.contains("_")) {
+		if (game.getWord(false).contains("_")) {
 			row0.setText(used[0]);
 			row1.setText(used[1]);
 		} else {
