@@ -28,10 +28,7 @@ public class Game {
 
 	private static Game getCurrent(final boolean createIfNull) {
 		if (current == null && createIfNull) {
-			if (hardmode)
-				new HardMode();
-			else
-				new Game();
+			create();
 		}
 		return current;
 	}
