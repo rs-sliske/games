@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import uk.sliske.games.hangman.Game;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
 
 public class Window extends JFrame {
 	private static final long serialVersionUID = 6782120844725251459L;
@@ -28,6 +29,7 @@ public class Window extends JFrame {
 	private Label row1;
 
 	public Window(){
+		setResizable(false);
 		createWindow();
 		refreshData();
 	}
@@ -50,7 +52,7 @@ public class Window extends JFrame {
 		JButton newGame = new JButton("New Game");
 		newGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Game();
+				Game.create();
 				refreshData();
 			}
 		});
@@ -87,6 +89,17 @@ public class Window extends JFrame {
 		textField.setBounds(141, 183, 86, 50);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("");
+		rdbtnNewRadioButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Game.hardmode = rdbtnNewRadioButton.isSelected();
+			}
+		});
+		rdbtnNewRadioButton.setHorizontalAlignment(SwingConstants.CENTER);
+		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		rdbtnNewRadioButton.setBounds(367, 183, 57, 50);
+		contentPane.add(rdbtnNewRadioButton);
 		setLocationRelativeTo(null);
 	}
 
@@ -106,6 +119,6 @@ public class Window extends JFrame {
 		}
 
 		textField.setText("");
-
+		textField.requestFocus();
 	}
 }

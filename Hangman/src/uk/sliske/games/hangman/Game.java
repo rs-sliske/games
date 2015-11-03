@@ -16,9 +16,11 @@ import java.util.Set;
 
 public class Game {
 	private static Game current;
-	private static final Random random = new Random();
+	protected static final Random random = new Random();
 	private static String[] dictionary;
 	private static int guesses = 13;
+
+	public static boolean hardmode = false;
 
 	public static Game getCurrent() {
 		return getCurrent(true);
@@ -26,17 +28,27 @@ public class Game {
 
 	private static Game getCurrent(final boolean createIfNull) {
 		if (current == null && createIfNull) {
-			new Game();
+			if (hardmode)
+				new HardMode();
+			else
+				new Game();
 		}
 		return current;
 	}
+	
+	public static void create(){
+		if (hardmode)
+			new HardMode();
+		else
+			new Game();
+	}
 
-	private HashSet<Character> guessedLetters;
-	private String[] possibleWords;
-	private int lives;
-	private int wordLength;
-	private String word;
-	private boolean wordSet = false;
+	protected HashSet<Character> guessedLetters;
+	protected String[] possibleWords;
+	protected int lives;
+	protected int wordLength;
+	protected String word;
+	protected boolean wordSet = false;
 
 	public Game() {
 		this(-1);
@@ -139,22 +151,28 @@ public class Game {
 		System.out.printf("you have guessed the letter '%c'\n", c);
 		guessedLetters.add(c);
 
+		handleLetter(c);
+	}
+	
+	public void handleLetter(char c){
+
 		int count = countPossible(c);
 
-		if (count > 0) {
-			possibleWords = removeFromList(c);
-		}
-		if (count == 1) {
-			word = possibleWords[0];
-			wordSet = true;
-			System.out.println(word);
+		if (!wordSet) {
+			if (count > 0) {
+				possibleWords = removeFromList(c);
+			}
+			if (count <= 1) {
+				word = possibleWords[0];
+				wordSet = true;
+				System.out.println(word);
+			}
 		}
 		if (word == null || !word.contains(c + "")) {
 			lives--;
 		}
 
 		System.out.printf("there are %d possible answers remaining\n", count);
-
 	}
 
 	public String getWord(boolean gameOver) {
@@ -208,10 +226,10 @@ public class Game {
 		} else {
 			guesses++;
 		}
-		if(guesses <= 0){
+		if (guesses <= 0) {
 			guesses = 0;
 		}
-		if(guesses > 26){
+		if (guesses > 26) {
 			guesses = 26;
 		}
 
@@ -251,7 +269,7 @@ public class Game {
 		return r;
 	}
 
-	private String[] removeFromList(char c) {
+	protected String[] removeFromList(char c) {
 		ArrayList<String> res = new ArrayList<String>();
 		for (String s : possibleWords) {
 			if (!s.contains(c + "")) {
