@@ -23,7 +23,7 @@ public class Game {
 	public static Game getCurrent() {
 		return getCurrent(true);
 	}
-	
+
 	private static Game getCurrent(final boolean createIfNull) {
 		if (current == null && createIfNull) {
 			new Game();
@@ -34,26 +34,30 @@ public class Game {
 	private HashSet<Character> guessedLetters;
 	private String[] possibleWords;
 	private int lives;
-	private final int wordLength;
+	private int wordLength;
 	private String word;
 	private boolean wordSet = false;
 
 	public Game() {
 		this(-1);
 	}
-	
-	public Game(final int startingLives){
+
+	public Game(final int startingLives) {
 		gameOver();
-		
+
 		guessedLetters = new HashSet<Character>();
 
 		lives = startingLives;
-		if(lives < 0){
+		if (lives < 0) {
 			lives = guesses;
 		}
-		wordLength = random.nextInt(5) + 4;
+		do {
+			wordLength = random.nextInt(10) + 2;
+			possibleWords = filterLength();
+		} while (possibleWords.length <= 0);
+
 		System.out.printf("starting new game with %d guesses\n", lives);
-		possibleWords = filterLength();
+
 		current = this;
 	}
 
@@ -64,13 +68,15 @@ public class Game {
 
 			try {
 				List<String> temp = new ArrayList<String>();
-				
-				String path = System.getProperty("user.home") + "//sliske games//hangman//dictionary.txt";
+
+				String path = System.getProperty("user.home")
+						+ "//sliske games//hangman//dictionary.txt";
 
 				File file = new File(path);
 				if (!file.exists()) {
 					file = download(
-							"http://www-01.sil.org/linguistics/wordlists/english/wordlist/wordsEn.txt", path);
+							"http://www-01.sil.org/linguistics/wordlists/english/wordlist/wordsEn.txt",
+							path);
 				}
 
 				Scanner scanner = new Scanner(file);
@@ -187,7 +193,7 @@ public class Game {
 	private static void gameOver() {
 		boolean won = true;
 		Game game = getCurrent(false);
-		if(game == null){
+		if (game == null) {
 			System.out.println("current game is null");
 			return;
 		}
@@ -201,6 +207,12 @@ public class Game {
 			guesses--;
 		} else {
 			guesses++;
+		}
+		if(guesses <= 0){
+			guesses = 0;
+		}
+		if(guesses > 26){
+			guesses = 26;
 		}
 
 	}

@@ -87,7 +87,7 @@ public class Window extends JFrame {
 		textField.setBounds(141, 183, 86, 50);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+		setLocationRelativeTo(null);
 	}
 
 	public void refreshData() {

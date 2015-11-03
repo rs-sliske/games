@@ -55,7 +55,7 @@ public class Hangman {
 		row1.setBounds(10, 129, 414, 22);
 		row1.setText("Please Wait");
 		frame.add(row1);
-
+		frame.setLocationRelativeTo(null);
 		return frame;
 	}
 
