@@ -35,8 +35,8 @@ public class Game {
 		}
 		return current;
 	}
-	
-	public static void create(){
+
+	public static void create() {
 		if (hardmode)
 			new HardMode();
 		else
@@ -49,6 +49,7 @@ public class Game {
 	protected int wordLength;
 	protected String word;
 	protected boolean wordSet = false;
+	protected String[] knownChars;
 
 	public Game() {
 		this(-1);
@@ -69,6 +70,11 @@ public class Game {
 		} while (possibleWords.length <= 0);
 
 		System.out.printf("starting new game with %d guesses\n", lives);
+
+		knownChars = new String[wordLength];
+		for (int i = 0; i < wordLength; i++) {
+			knownChars[i] = "__";
+		}
 
 		current = this;
 	}
@@ -153,8 +159,8 @@ public class Game {
 
 		handleLetter(c);
 	}
-	
-	public void handleLetter(char c){
+
+	public void handleLetter(char c) {
 
 		int count = countPossible(c);
 
@@ -166,6 +172,13 @@ public class Game {
 				word = possibleWords[0];
 				wordSet = true;
 				System.out.println(word);
+			}
+		} else {
+			for (int i = 0; i < wordLength; i++) {
+				char ch = word.charAt(i);
+				if(guessedLetters.contains(ch)){
+					knownChars[i] = ch+"";
+				}
 			}
 		}
 		if (word == null || !word.contains(c + "")) {
@@ -182,30 +195,17 @@ public class Game {
 			}
 			return possibleWords[random.nextInt(possibleWords.length)];
 		}
-		if (wordSet) {
-			String res = "";
-			for (int i = 0; i < wordLength; i++) {
-				if (i != 0) {
-					res += " ";
-				}
-				if (guessedLetters.contains(word.charAt(i))) {
-					res += word.charAt(i);
-				} else {
-					res += "__";
-				}
-			}
-			return res;
-		} else {
-			String res = "";
-			for (int i = 0; i < wordLength; i++) {
-				if (i != 0) {
-					res += " ";
-				}
-				res += "__";
 
+		String res = "";
+		for (int i = 0; i < wordLength; i++) {
+			if (i != 0) {
+				res += " ";
 			}
-			return res;
+			res += knownChars[i];
+
 		}
+		return res;
+
 	}
 
 	private static void gameOver() {

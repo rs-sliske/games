@@ -4,16 +4,6 @@ import java.util.ArrayList;
 
 public class HardMode extends Game {
 
-	private String[] knownChars;
-
-	public HardMode() {
-		super();
-		knownChars = new String[wordLength];
-		for (int i = 0; i < wordLength; i++) {
-			knownChars[i] = "__";
-		}
-	}
-
 	public void handleLetter(char c) {
 		String[][] remaining = new String[wordLength + 1][];
 		for (int i = 0, j = wordLength + 1; i < j; i++) {
@@ -68,39 +58,6 @@ public class HardMode extends Game {
 			}
 		}
 		return i;
-	}
-
-	public String getWord(boolean gameOver) {
-		if (gameOver) {
-			if (word != null) {
-				return word;
-			}
-			return possibleWords[random.nextInt(possibleWords.length)];
-		}
-		if (wordSet) {
-			String res = "";
-			for (int i = 0; i < wordLength; i++) {
-				if (i != 0) {
-					res += " ";
-				}
-				if (guessedLetters.contains(word.charAt(i))) {
-					res += word.charAt(i);
-				} else {
-					res += "__";
-				}
-			}
-			return res;
-		} else {
-			String res = "";
-			for (int i = 0; i < wordLength; i++) {
-				if (i != 0) {
-					res += " ";
-				}
-				res += knownChars[i];
-
-			}
-			return res;
-		}
 	}
 
 }
