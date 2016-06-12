@@ -30,7 +30,7 @@ public class HardMode extends Game {
 			System.out.printf("word does not contain %c\n", c);
 			lives--;
 		} else {
-			System.out.printf("word has letter %c at postion %d\n", c,
+			System.out.printf("word has letter %c at position %d\n", c,
 					maxIndex + 1);
 			knownChars[maxIndex] = c + "";
 		}
